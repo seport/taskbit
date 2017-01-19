@@ -164,14 +164,64 @@ hr{
 
 #content h1{
 	font-size: 24px;
-	color: #00BCD4;
 	font-weight: normal;
 }
 #content h2{
 	font-size: 20px;
-	color: #00BCD4;
 }
 #content h3{
 	font-size: 16px;
 	font-weight: 500;
+}
+
+.theme{
+	height: 100px;
+	width: 100px;
+}
+
+.rose .lighten-5{
+	background-color: #fdfafa !important;
+}
+.rose.lighten-4{
+	background-color: #fcf8f9 !important;
+}
+.rose .lighten-3{
+	background-color: #fbf5f6 !important;
+}
+.rose .lighten-2{
+	background-color: #faf2f3 !important;
+}
+.rose .lighten-1{
+	background-color: #f9eff0 !important;
+}
+.rose{
+	background-color: #F2DCDE !important;
+}
+.rose .darken-1{
+	background-color: #ebc9cc !important;
+}
+.rose .darken-2{
+	background-color: #e4b7bb !important;
+}
+.rose .darken-3{
+	background-color: #dda4a9 !important;
+}
+.rose .darken-4{
+	background-color: #d69197 !important;
+}
+.rose .accent-1{
+	background-color: #fff !important;
+}
+.rose .accent-2{
+	background-color: #f9eff0 !important;
+}
+.rose .accent-3{
+	background-color: #ffcfd3 !important;
+}
+.rose .accent-4{
+	background-color: #dda4a9 !important;
+}
+
+.row .col.s1{
+	width: inherit;
 }
