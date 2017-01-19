@@ -4,6 +4,20 @@ $(document).ready(function(){
 	pause = false;
 	lastdown = 0;
 	menu = false;
+	theme = 'rose';
+
+	//setting theme
+	if(localStorage.theme){
+		theme = localStorage.theme;
+	} else{
+		theme = 'cyan';
+	}
+
+	$('.addtheme').each(function(){
+		$(this).removeClass('addtheme');
+		$(this).removeClass('transparent');
+		$(this).addClass(theme);
+	})
 
 	//setting the sound clips
 	startsound = document.createElement('audio');
@@ -28,10 +42,10 @@ $(document).ready(function(){
 	console.log(routines);
 
 	for(l=0; l<routines.length; l++){
-		var table = '<div id="' + routines[l].id + '" class="routine"><div class="start"><button class="waves-effect waves-light btn cyan startbutton">Start</button></div><div class="pause"><button class="waves-effect waves-light btn cyan pausebutton">Pause</button><button class="waves-effect waves-light btn cyan stopbutton">Stop</button></div><table class="table draggable"><tr class="head"><th>Task</th><th>Duration</th><th></th></tr></table><button class="waves-effect waves-light btn cyan addrowbutton">Add Task</button><br/><button class="waves-effect waves-light btn cyan savebutton">Save Routine</button><button class="waves-effect waves-light btn cyan renamebutton">Rename Routine</button><button class="waves-effect waves-light btn cyan deletebutton">Delete Routine</button></div>';
+		var table = '<div id="' + routines[l].id + '" class="routine"><div class="start"><button class="waves-effect waves-light btn ' + theme + ' startbutton">Start</button></div><div class="pause"><button class="waves-effect waves-light btn ' + theme + ' pausebutton">Pause</button><button class="waves-effect waves-light btn ' + theme + ' stopbutton">Stop</button></div><table class="table draggable"><tr class="head"><th>Task</th><th>Duration</th><th></th></tr></table><button class="waves-effect waves-light btn ' + theme + ' addrowbutton">Add Task</button><br/><button class="waves-effect waves-light btn ' + theme + ' savebutton">Save Routine</button><button class="waves-effect waves-light btn ' + theme + ' renamebutton">Rename Routine</button><button class="waves-effect waves-light btn ' + theme + ' deletebutton">Delete Routine</button></div>';
 		$("#tables").append(table);
 		for(j=0; j<routines[l].table.length; j++){
-			var newrow = "<tr><td>" + routines[l].table[j].task + "</td><td class='time'>" + parseInt(routines[l].table[j].seconds) + "</td><td class='displaytime'>" + formattime(parseInt(routines[l].table[j].seconds)) + "</td><td><a class='waves-effect waves-cyan btn-flat removetaskbutton'>Delete</a></td></tr>";
+			var newrow = "<tr><td>" + routines[l].table[j].task + "</td><td class='time'>" + parseInt(routines[l].table[j].seconds) + "</td><td class='displaytime'>" + formattime(parseInt(routines[l].table[j].seconds)) + "</td><td><a class='waves-effect waves-" + theme + " btn-flat removetaskbutton'>Delete</a></td></tr>";
 			$("#" + routines[l].id + " table").append(newrow);
 		}
 		if(routines[l].table.length < 1){
@@ -59,7 +73,7 @@ $(document).ready(function(){
 $(document).on('click','.newroutinebutton',function(){
 	$("#tables").children().hide();
 	var id = Date.now()
-	var newroutine = '<div id="' + id + '" class="routine"><div class="start"><button class="waves-effect waves-light btn cyan startbutton">Start</button></div><div class="pause"><button class="waves-effect waves-light btn cyan pausebutton">Pause</button><button class="waves-effect waves-light btn cyan stopbutton">Stop</button></div><table class="table draggable"><tr class="head"><th>Task</th><th>Duration</th><th></th></tr></table><button class="waves-effect waves-light btn cyan addrowbutton">Add Task</button><br/><button class="waves-effect waves-light btn cyan savebutton">Save Routine</button><button class="waves-effect waves-light btn cyan renamebutton">Rename Routine</button><button class="waves-effect waves-light btn cyan deletebutton">Delete Routine</button></div>';
+	var newroutine = '<div id="' + id + '" class="routine"><div class="start"><button class="waves-effect waves-light btn ' + theme + ' startbutton">Start</button></div><div class="pause"><button class="waves-effect waves-light btn ' + theme + ' pausebutton">Pause</button><button class="waves-effect waves-light btn ' + theme + ' stopbutton">Stop</button></div><table class="table draggable"><tr class="head"><th>Task</th><th>Duration</th><th></th></tr></table><button class="waves-effect waves-light btn ' + theme + ' addrowbutton">Add Task</button><br/><button class="waves-effect waves-light btn ' + theme + ' savebutton">Save Routine</button><button class="waves-effect waves-light btn ' + theme + ' renamebutton">Rename Routine</button><button class="waves-effect waves-light btn ' + theme + ' deletebutton">Delete Routine</button></div>';
 	$("#tables").append(newroutine)
 	var newroutinelink = '<li class="tab pickroutinebutton highlightroutine" id="' + id + 'title"><a href="#' + id + '">New Routine</a></li>'
 	$(newroutinelink).insertBefore($(".newroutinebutton"));
@@ -171,13 +185,16 @@ $(document).on('click','.stopbutton',function(){
 	$("#timer").html(formattime(0));
 	pause = false;
 	$("#" + id + " tr").removeClass("highlight");
+	$("#" + id + " tr").removeClass(theme);
+	$("#" + id + " tr").removeClass("lighten-4");
+
 	$(".start").show();
 	$(".pause").hide();
 })
 //on new row
 $(document).on('click','.addrowbutton',function(){
 	var id = $(this).closest(".routine").attr("id");
-	newrow = "<tr class='new'><td><input name='task'></td><td><input name='duration'></td><td><button class='waves-effect waves-cyan btn-flat addtaskbutton'>Add</button></td></tr>";
+	newrow = "<tr class='new'><td><input name='task'></td><td><input name='duration'></td><td><button class='waves-effect waves-" + theme + " btn-flat addtaskbutton'>Add</button></td></tr>";
 	$("#" + id + " table").append(newrow);
 })
 //on add task
@@ -185,7 +202,7 @@ $(document).on('click','.addtaskbutton',function(){
 	if(!isNaN(parseInt($(this).closest("tr").find("input[name=duration]").val()))){
 		$(this).closest("tr").removeClass('new');
 		var place = $("tr").index($(this).closest("tr")) + 1;
-		var newrow = "<td>" + $(this).closest("tr").find("input[name=task]").val() + "</td><td class='time'>" + parseInt($(this).closest("tr").find("input[name=duration]").val()) + "</td><td class='displaytime'>" + formattime(parseInt($(this).closest("tr").find("input[name=duration]").val())) + "</td><td><button class='waves-effect waves-cyan btn-flat removetaskbutton'>Delete</button></td>";
+		var newrow = "<td>" + $(this).closest("tr").find("input[name=task]").val() + "</td><td class='time'>" + parseInt($(this).closest("tr").find("input[name=duration]").val()) + "</td><td class='displaytime'>" + formattime(parseInt($(this).closest("tr").find("input[name=duration]").val())) + "</td><td><button class='waves-effect waves-" + theme + " btn-flat removetaskbutton'>Delete</button></td>";
 		$(this).closest("tr").html(newrow);
 	}
 	else{
@@ -276,7 +293,11 @@ function start(i, id) {
 			}
 			startsound.play();
 			$("#" + id + " tr").removeClass("highlight");
+			$("#" + id + " tr").removeClass(theme);
+			$("#" + id + " tr").removeClass("lighten-4");
 			$("#" + id + " tr:nth-child(" + i + ")").addClass("highlight");
+			$("#" + id + " tr:nth-child(" + i + ")").addClass(theme);
+			$("#" + id + " tr:nth-child(" + i + ")").addClass("lighten-4");
 			time = $("#" + id + " table tr:nth-child(" + i + ")").find(".time").html();
 			$("#timer").html(formattime(time));
 			timer = setInterval('countdown(' + i + ',' + id + ')', 1000);
@@ -285,6 +306,8 @@ function start(i, id) {
 	else{
 		clearInterval(timer)
 		$("#" + id + " tr").removeClass("highlight");
+		$("#" + id + " tr").removeClass(theme);
+		$("#" + id + " tr").removeClass("lighten-4");
 		$(".start").show();
 		$(".pause").hide();
 		alert("congratulations on completing your morning routine!")
