@@ -4,7 +4,6 @@ $(document).ready(function(){
 	pause = false;
 	lastdown = 0;
 	menu = false;
-	theme = 'rose';
 
 	//setting theme
 	if(localStorage.theme){
@@ -252,10 +251,12 @@ $(document).on('click','.savebutton',function(){
 
 //on mobile long tap
 $(document).on("longtap",".draggable tr",function(e){
-	e.preventDefault();
 	if ("vibrate" in navigator) {
-		navigator.vibrate(500);
+		// vibration API supported
+		// vibrate for one second
+		navigator.vibrate([100,100,100]);
 	}
+	e.preventDefault();
 	select($(this));
 })
 //on mobile touch end
@@ -266,7 +267,7 @@ $(document).on("touchend",function(){
 $(document).on("touchmove",function(e){
 	if(selected){
   	e.preventDefault();
-  	shouldswitch(e.originalEvent.touches[0].clientX,e.originalEvent.touches[0].clientY,$(this));
+  	shouldswitch(e.originalEvent.touches[0].pageX,e.originalEvent.touches[0].pageY,$(this));
   }
 })
 
