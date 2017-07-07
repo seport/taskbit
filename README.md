@@ -6,4 +6,4 @@ For questions or concerns please email me at [taskbitapp@gmail.com](mailto:taskb
 ## Built With
 
 * jQuery
-* [Materialize](http://materializecss.com/)
+* [Materialize](http://materializecss.com/) - front end framework
