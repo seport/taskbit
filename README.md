@@ -5,5 +5,5 @@ For questions or concerns please email me at [taskbitapp@gmail.com](mailto:taskb
 
 ## Built With
 
-* jQuery and HTML alone.
-* That's it. No other fancy libraries or anything.
+* jQuery
+* [Materialize](http://materializecss.com/)
