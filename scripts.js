@@ -12,6 +12,13 @@ $(document).ready(function(){
 		theme = 'cyan';
 	}
 
+	if(localStorage.isTimer){
+		isTimer = localStorage.isTimer;
+	} else{
+		isTimer = true;
+	}
+	console.log(isTimer)
+
 	$('.addtheme').each(function(){
 		$(this).removeClass('addtheme');
 		$(this).removeClass('transparent');
@@ -122,9 +129,14 @@ $(document).on('click','.deletebutton',function(){
 //on start
 $(document).on('click','.startbutton',function(){
 	var id = $(this).closest(".routine").attr("id");
-	start(2, id);
-	$(".start").hide();
-	$(".pause").show();
+	if(isTimer == true){
+		start(2, id);
+		$(".start").hide();
+		$(".pause").show();
+	}
+	else{
+		startNoTimer(2, id)
+	}
 })
 //when you click on a table row
 $(document).on('mousedown','tr',function(event){
@@ -147,10 +159,15 @@ $(document).on('mouseup','tr',function(event){
 	if(Date.now() - lastdown < 500){
 		var id = $(this).closest(".routine").attr("id");
 		if(!$(this).hasClass("new") && !$(this).hasClass("head")){
-			clearInterval(timer)
-			start($("#" + id + " tr").index($(this)) + 1,id);
-			pause = false;
-			$(".pausebutton").html('Pause');
+			if(isTimer == true){
+				clearInterval(timer)
+				start($("#" + id + " tr").index($(this)) + 1,id);
+				pause = false;
+				$(".pausebutton").html('Pause');
+			}
+			else{
+				startNoTimer($("#" + id + " tr").index($(this)) + 1,id)
+			}
 		}
 	}
 	//if long click:
@@ -213,7 +230,12 @@ $(document).on('click','.removetaskbutton',function(){
 	var id = $(this).closest(".routine").attr("id");
 	var place = $("#" + id + " tr").index($(this).closest("tr")) + 1;
 	if($("#" + id + " tr").index($(".highlight")) == $("#" + id + " tr").index($(this).closest("tr"))){
-		start(place+1,id);
+		if(isTimer == true){
+			start(place+1,id);
+		}
+		else{
+			startNoTimer(place+1,id);
+		}
 	}
 	$("#" + id + " table tr:nth-child(" + place + ")").remove();
 })
@@ -275,6 +297,54 @@ $(document).on("touchmove",function(e){
 /*
 **functions
 */
+
+function startNoTimer(i,id){
+	//reset the onclick functions
+	$(".noTimer .next").off('click');
+	$(".noTimer .previous").off('click');
+
+	//set the message
+	message = $("#" + id + " table tr:nth-child(" + i + ") td:first-child").html();
+	$(".noTimer .title").html(message);
+
+	//if it's the first one, remove the previous button, otherwise add the previous button.
+	if(i <= 2){
+		$(".noTimer .previous").css("visibility","hidden");
+	}
+	else{
+		$(".noTimer .previous").css("visibility","visible");
+	}
+
+	//if it's the last one, change the next button to done otherwise set it to next
+	if(i >= $("#" + id + " table tr").length){
+		$(".noTimer .next").html('Finish')
+	}
+	else{
+		$(".noTimer .next").html('Next')
+	}
+	
+	//set the onclick for next
+	$(".noTimer .next").on('click',function(){
+		if(i >= $("#" + id + " table tr").length){
+			console.log('done');
+			$(".noTimerbox").hide();
+			return;
+		}
+		console.log('next');
+		startNoTimer(i+1,id);
+	})
+
+	//set the onclick for previous
+	$(".noTimer .previous").on('click',function(){
+		$(".noTimer .next").html('Next')
+
+		startNoTimer(i-1,id);
+		console.log('previous');
+	})
+
+	//show the box
+	$(".noTimerbox").show();
+}
 
 //start timer for a particular task
 function start(i, id) {

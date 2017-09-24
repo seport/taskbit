@@ -23,6 +23,7 @@
 
 	<!--my scripts and styles-->
 	<script src="layoutscript.js"></script>
+	<script src="settings.js"></script>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -88,6 +89,12 @@
 			<div class="theme pink"></div>
 			<input name="theme" type="radio" id="pink" />
 			<label for="pink">Pink</label>
+		</div>
+
+		<div class="col s1">
+			<div class="theme lavender"></div>
+			<input name="theme" type="radio" id="lavender" />
+			<label for="lavender">Lavender</label>
 		</div>
 
 		<div class="col s1">
@@ -186,6 +193,15 @@
 			<label for="blue-grey">Blue Grey</label>
 		</div>
 	</div>
+	<div class="switch">
+			<label>Timer</label>			
+			<label>
+			  Off
+			  <input type="checkbox" name="timer">
+			  <span class="lever"></span>
+			  On
+			</label>
+		  </div>
 </form>
 <button class="waves-effect waves-light btn addtheme transparent savebutton">Save</button>
 </div>
